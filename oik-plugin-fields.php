@@ -4,7 +4,7 @@ Plugin Name: oik plugin fields
 Depends: oik base plugin, oik fields, oik plugins
 Plugin URI: http://www.oik-plugins.com/oik-plugins/oik-plugin-fields
 Description: Additional fields for oik-plugins
-Version: 0.0.0
+Version: 0.0.1
 Author: bobbingwide
 Author URI: http://www.oik-plugins.com/author/bobbingwide
 Text Domain: oik-plugin-fields
@@ -38,7 +38,7 @@ oikplf_plugin_loaded();
 function oikplf_plugin_loaded() {
   add_action( 'oik_fields_loaded', 'oikplf_oik_fields_loaded', 11 );
 	//add_action( "run_oik-plugin-fields.php", "oikplf_run_oikplf" );
-	add_action( "init", "oikplf_init" );
+	//add_action( "init", "oikplf_init" );
 	add_action( "oik_admin_menu", "oikplf_oik_admin_menu" );
 
 }
@@ -47,10 +47,6 @@ function oikplf_plugin_loaded() {
  * Implement
  */
 function oikplf_init() {
-	//remove_filter( 'post_class', 'genesis_featured_image_post_class' );
-	//add_filter( "genesis_get_image_default_args", "oikplf_genesis_get_image_default_args", 10, 2 );
-	//add_filter( "genesis_get_image", "oikplf_genesis_get_image", 10, 6 );
-	//add_filter( "wp_get_attachment_image_src", "oikplf_wp_get_attachment_image_src", 10, 4 );
 }	
 
 /**
@@ -66,12 +62,13 @@ function oikplf_oik_fields_loaded() {
 	//gob();
 }
 
+/**
+ * Registers hooks to automatically set missing fields.
+ */
 function oikplf_oik_admin_menu() {
-
 	add_action( "save_post_oik-plugins", "oikplf_save_post_oik_plugins", 10, 3 );
 	add_action( "save_post", "oikplf_save_post", 10, 3 );
 }
-
 
 /**
  * Batch run oik-plugin-fields to define the taxonomy terms
@@ -79,48 +76,6 @@ function oikplf_oik_admin_menu() {
 function oikplf_run_oikplf() {
 	oik_require( "admin/oik-plugin-fields-run.php", "oik-plugin-fields" );
 	oikplf_lazy_run_oikplf();
-}
-
-/**
- * Set fallback values for the featured image
- * 
- * ![banner](https://raw.githubusercontent.com/bobbingwide/oik/master/assets/oik-banner-772x250.jpg)
- * 
- * @param array $defaults
- * @param array $args
- * @return array with fallback parameters set 
- */
-function oikplf_genesis_get_image_default_args( $defaults, $args ) {
-
-	bw_trace2();
-	unset( $defaults['fallback'] );
-	
-	$defaults['fallback']['html'] = "[github owner repository assets/plugin-banner-772x250.jpg]";
-	$defaults['fallback']['url'] = null;
-	return( $defaults );
-}
-
-/**
- * Implement 'genesis_get_image' for deferred finding of the attached image
- * 
- * @param string $output 
- * @param array $args - fairly useless
- * @param integer $id - may be 0
- * @param string $html - could be the dummy github shortcode 
- * @param string $url may be null
- * @param string $src may be null
- */
-function oikplf_genesis_get_image( $output, $args, $id, $html, $url, $src ) {
-	//bw_trace2();
-	if ( !$output ) {
-		$image_file = oikplf_github_repo_screenshot();
-		if ( $image_file ) {
-			$output = retimage( null, $image_file, "" ); 
-		}
-	}	else {
-		// It's already set
-	}
-	return( $output );
 }
 
 /**
@@ -137,25 +92,6 @@ function oikplf_github_image_file( $gitrepo, $file='screenshot.png' ) {
 	$github[] = $file;
 	$target = implode( "/", $github );
 	return( $target );
-}
-
-/**
- * Implement 'wp_get_attachment_image_src' for oik-plugin-fields 
- * 
- * @param array|false  $image         Either array with src, width & height, icon src, or false.
- * @param int          $attachment_id Image attachment ID.
- * @param string|array $size          Size of image. Image size or array of width and height values
- *                                    (in that order). Default 'thumbnail'.
- * @param bool         $icon          Whether the image should be treated as an icon. Default false.
- */
-function oikplf_wp_get_attachment_image_src( $image, $attachment_id, $size, $icon ) {
-	if ( !$image ) {
-		$image[0] = oikplf_github_repo_screenshot();
-		// We can't set the width or height
-	} 
-	bw_trace2( $image, "image" );
-	bw_backtrace();
-	return( $image );	
 }
 
 /**
@@ -214,6 +150,7 @@ function oikplf_save_post_oik_plugins( $post_ID, $post, $update ) {
 		oik_require( "admin/oik-plugin-fields-save-post.php", "oik-plugin-fields" );
 		oikplf_lazy_save_post_oik_plugins( $post_ID, $post, $update );
 	}
+	//gob();
 
 }
 
