@@ -182,7 +182,7 @@ class OIK_plugin_fields {
 			$featured_image = new OIK_plugins_featured_image( $this );
 			$featured_image->set_featured_image();
 		} else {
-			gob();
+			// Featured image already set so no need to do it again.
 		}
 	}
 	
