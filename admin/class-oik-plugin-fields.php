@@ -20,6 +20,7 @@
     [_oikp_git] => 
     [excerpt] => 
     [post_name] => 
+		
 )
  */
  
@@ -36,6 +37,8 @@ class OIK_plugin_fields {
 	public $post_ID = null;
 	public $post = null;
 	public $featured_image = null;
+	public $readme_txt = null;
+	public $plugin_file = null;
 	
 	/**
 	 * Constructor method
@@ -69,7 +72,8 @@ class OIK_plugin_fields {
 		$this->post = $post;
 		$this->query_fields();
 		$this->set_fields();
-		
+		$this->set_desc();
+		$this->set_oik_tags();
 	
 	}
 	
@@ -89,6 +93,7 @@ class OIK_plugin_fields {
 		$this->oikp_slug = $this->get_field( "_oikp_slug" );
 		$this->oikp_name = $this->get_field( "_oikp_name" );
 		$this->oikp_git = $this->get_field( "_oikp_git" );
+		$this->oikp_desc = $this->get_field( "_oikp_desc" );
 	}
 	
 	/**
@@ -184,6 +189,40 @@ class OIK_plugin_fields {
 		} else {
 			// Featured image already set so no need to do it again.
 		}
+	}
+	
+	function load_readme_txt() { 
+		if ( !$this->readme_txt ) {
+			oik_require( "admin/class-oik-plugins-readme-txt.php", "oik-plugin-fields" );
+			$this->readme_txt = new OIK_plugins_readme_txt( $this );
+		}
+	}
+	
+	function load_plugin_file() {
+		if ( !$this->plugin_file ) {
+			oik_require( "admin/class-oik-plugins-plugin-file.php", "oik-plugin-fields" );
+			$this->plugin_file = new OIK_plugins_plugin_file( $this );
+		}
+	}
+	
+	 
+	/**
+	 * Set description from the plugin file's Description: 
+	 */
+	function set_desc() {
+		if ( !$this->oikp_desc ) {
+			$this->load_plugin_file();
+			$this->plugin_file->set_desc();
+		}
+	}
+	
+	/**
+	 * Set plugin tags from the readme.txt file Tags: section
+	 */
+	function set_oik_tags() {
+		// if ( !$this->
+		$this->load_readme_txt();
+		$this->readme_txt->set_oik_tags();
 	}
 	
 }

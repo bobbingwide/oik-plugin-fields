@@ -111,6 +111,11 @@ class OIK_plugins_featured_image {
 	/**
 	 * Returns the finder methods for the banner image
 	 *
+	 * Whether or not we find the file we're looking for is another thing.
+	 * e.g. Bespoke plugins may be lurking about on GitHub but won't be on wordpress.org
+	 * 
+	 * @TODO Decide what to do with 4. Other premium plugins
+	 *
 	 * @array of comma separated finder methods
 	 */
 	function determine_finder_methods() {
