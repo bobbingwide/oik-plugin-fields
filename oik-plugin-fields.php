@@ -47,10 +47,10 @@ function oikplf_plugin_loaded() {
  * Implement
  */
 function oikplf_init() {
-	remove_filter( 'post_class', 'genesis_featured_image_post_class' );
-	add_filter( "genesis_get_image_default_args", "oikplf_genesis_get_image_default_args", 10, 2 );
-	add_filter( "genesis_get_image", "oikplf_genesis_get_image", 10, 6 );
-	add_filter( "wp_get_attachment_image_src", "oikplf_wp_get_attachment_image_src", 10, 4 );
+	//remove_filter( 'post_class', 'genesis_featured_image_post_class' );
+	//add_filter( "genesis_get_image_default_args", "oikplf_genesis_get_image_default_args", 10, 2 );
+	//add_filter( "genesis_get_image", "oikplf_genesis_get_image", 10, 6 );
+	//add_filter( "wp_get_attachment_image_src", "oikplf_wp_get_attachment_image_src", 10, 4 );
 }	
 
 /**
@@ -225,7 +225,7 @@ function oikplf_save_post_oik_plugins( $post_ID, $post, $update ) {
  * before we redirect to edit post, a separate transaction. 
  */
 function oikplf_save_post( $post_ID, $post, $update ) {	
-	gob();
+	//gob();
 }
  
 
